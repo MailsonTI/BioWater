@@ -8,6 +8,22 @@ import pandas as pd
 
 DATABASE_FILE = Path(__file__).with_name("biowater.db")
 
+def check_database_status():
+    try:
+        if not DATABASE_FILE.exists():
+            return False
+
+        database_uri = DATABASE_FILE.resolve().as_uri() + "?mode=ro"
+
+        with sqlite3.connect(database_uri, uri=True) as connection:
+            result = connection.execute(
+                "PRAGMA quick_check"
+            ).fetchone()
+
+        return result is not None and result[0] == "ok"
+
+    except sqlite3.Error:
+        return False
 
 def initialize_database():
     with sqlite3.connect(DATABASE_FILE) as connection:
