@@ -3,95 +3,142 @@
 
 ## Overview
 
-BioWater is an educational environmental monitoring project that demonstrates how Python and data visualization can support the analysis of water quality measurements.
+BioWater is an environmental monitoring and water quality analysis application developed to integrate Environmental Science and Information Technology.
 
-The application provides a simple dashboard for recording sample measurements, viewing key indicators, visualizing data, and exporting records to CSV.
+The application allows users to register water samples, analyze measurements, monitor environmental indicators, visualize data through interactive charts, and manage historical records.
+
+BioWater supports Portuguese and English interfaces, as well as SI and US temperature unit settings.
 
 ## Features
 
 - Register water samples by location.
-- Record pH, temperature, and dissolved oxygen.
-- Display summary indicators.
-- Visualize measurements in a chart.
-- View sample records in a table.
-- Export sample data to a CSV file.
+- Record pH, temperature, dissolved oxygen, turbidity, and electrical conductivity.
+- Register sampling date and time.
+- Display environmental indicators and statistics.
+- Visualize measurements through interactive charts.
+- Import sample data from CSV files.
+- Export historical records to CSV.
+- Store and manage records using SQLite.
+- Archive and restore sample records.
+- Support Portuguese and English interfaces.
+- Support SI and US temperature units.
 
-## Technologies
+## Technologies Used
 
-- Python
-- Streamlit
-- Pandas
-- Git and GitHub
+- **Python** — Main programming language.
+- **Streamlit** — Interactive web application framework.
+- **Pandas** — Data processing and analysis.
+- **SQLite** — Relational database for sample storage.
+- **Git** — Version control.
+- **GitHub** — Source code hosting and project collaboration.
 
 ## Getting Started
 
 ### Prerequisites
 
-- Python installed on your computer.
+- Python installed and available in your terminal.
 - Git installed if you want to clone the repository.
 
-### Installation
+## Installation and Setup
 
-1. Clone the repository:
+### 1. Clone the repository
 
-   ```bash
-   git clone YOUR_GITHUB_REPOSITORY_URL
-   ```
+```bash
+git clone https://github.com/MailsonTI/BioWater.git
+cd BioWater
+```
 
-2. Open the project directory:
+### 2. Create a virtual environment
 
-   ```bash
-   cd BioWater
-   ```
+```bash
+python -m venv .venv
+```
 
-3. Create and activate a virtual environment.
+### 3. Activate the virtual environment
 
-   On Windows PowerShell:
+**Windows PowerShell:**
 
-   ```powershell
-   python -m venv .venv
-   .\.venv\Scripts\Activate.ps1
-   ```
+```powershell
+.venv\Scripts\Activate.ps1
+```
 
-   If PowerShell blocks activation, you can use Command Prompt:
+**Linux / macOS:**
 
-   ```bat
-   .venv\Scripts\activate.bat
-   ```
+```bash
+source .venv/bin/activate
+```
 
-4. Install the dependencies:
+### 4. Install dependencies
 
-   ```bash
-   python -m pip install -r requirements.txt
-   ```
+```bash
+pip install -r requirements.txt
+```
 
-5. Run the application:
+### 5. Run the application
 
-   ```bash
-   python -m streamlit run app.py
-   ```
+```bash
+streamlit run app.py
+```
 
-## Data Notice
+The application will open in your default browser.
 
-The initial measurements are simulated examples for demonstration and learning purposes. They are not real environmental observations and should not be used to make public health or regulatory decisions.
+## Project Structure
 
-Sample records are held in the current Streamlit session. They are not permanently stored by the application.
+```text
+BioWater/
+│
+├── app.py
+├── database.py
+├── water_analysis.py
+├── requirements.txt
+├── README.md
+└── .gitignore
+```
+
+### Main Files
+
+- `app.py` — Main Streamlit application.
+- `database.py` — SQLite database operations.
+- `water_analysis.py` — Water quality analysis functions.
+- `requirements.txt` — Python dependencies.
+- `biowater.db` — Local SQLite database file, excluded from Git.
+
+## Data and Limitations
+
+The built-in measurements are simulated examples for learning. They are not real environmental observations and must not be used for public health or regulatory decisions.
+
+The measurement ranges in the app are input-validation limits, not regulatory water-quality thresholds. Any future water-quality classification should use documented, authoritative references.
+
+Sample records are stored locally in `biowater.db`. This database file is excluded from Git so local records are not included in the repository.
+
+CSV duplicate prevention applies during the current Streamlit session.
 
 ## Project Goals
 
-- Practice Python programming.
-- Explore data analysis with Pandas.
+- Practice Python programming and data analysis with Pandas.
 - Build an interactive dashboard with Streamlit.
-- Present environmental data in a clear, accessible format.
-- Develop a portfolio project combining science and information technology.
+- Explore how software can support environmental data review.
+- Present a portfolio project combining science and information technology.
 
 ## Future Improvements
 
-- Add persistent data storage.
-- Import datasets from CSV files.
-- Add water quality reference ranges with documented sources.
-- Improve data validation and reporting.
+- Add water-quality reference ranges with documented sources.
+- Expand data validation and reporting.
 
-## Author
+## About the Developer
 
-Created as a learning and portfolio project in environmental data analysis and software development.
+**Mailson Maciel de Freitas**
+
+Python Developer | Environmental Science & Technology
+
+Background in Biology and Systems Analysis and Development.
+
+BioWater represents the integration of scientific knowledge and software development to support environmental monitoring and water quality analysis.
+
+## Project Status
+
+BioWater is an ongoing project. New features, improvements, and refinements may be introduced as development progresses.
+
+## License
+
+This project is currently available for portfolio and educational purposes. No open-source license has been specified.
