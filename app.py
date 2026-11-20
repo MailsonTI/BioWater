@@ -810,6 +810,10 @@ if pagina == "Register Samples":
                 "Oxigênio (mg/L)"
             ] + colunas_opcionais
 
+            valores_numericos_originais = dados_csv[
+                colunas_numericas
+            ].copy()
+
             for coluna in colunas_numericas:
                 dados_csv[coluna] = pd.to_numeric(
                     dados_csv[coluna],
@@ -818,14 +822,33 @@ if pagina == "Register Samples":
 
             local_vazio = dados_csv["Local"].eq("").any()
 
-            numero_invalido = (
-                dados_csv[
-                    [
-                        "pH",
-                        "Temperatura (°C)",
-                        "Oxigênio (mg/L)"
-                    ]
-                ].isna().any().any()
+            linhas_numeros_invalidos = set()
+
+            for coluna in [
+                "pH",
+                "Temperatura (°C)",
+                "Oxigênio (mg/L)"
+            ]:
+                linhas_numeros_invalidos.update(
+                    dados_csv.index[dados_csv[coluna].isna()]
+                )
+
+            for coluna in colunas_opcionais:
+                valor_original = valores_numericos_originais[coluna]
+                campo_preenchido = (
+                    valor_original.notna()
+                    & valor_original.astype(str).str.strip().ne("")
+                )
+                valor_convertido_invalido = (
+                    campo_preenchido & dados_csv[coluna].isna()
+                )
+                linhas_numeros_invalidos.update(
+                    dados_csv.index[valor_convertido_invalido]
+                )
+
+            numero_invalido = bool(linhas_numeros_invalidos)
+            linhas_csv_com_numeros_invalidos = sorted(
+                indice + 2 for indice in linhas_numeros_invalidos
             )
 
             fora_dos_limites = (
@@ -872,8 +895,12 @@ if pagina == "Register Samples":
         elif numero_invalido:
             st.error(
                 traduzir(
-                    "As medições devem conter números válidos.",
-                    "Measurements must contain valid numbers."
+                    "Números inválidos nas linhas do CSV (contando o cabeçalho): "
+                    + ", ".join(map(str, linhas_csv_com_numeros_invalidos))
+                    + ". Corrija os valores ou deixe os campos opcionais em branco.",
+                    "Invalid numbers on CSV lines (including the header): "
+                    + ", ".join(map(str, linhas_csv_com_numeros_invalidos))
+                    + ". Correct the values or leave optional fields blank."
                 ),
                 icon="❌"
             )
@@ -1072,6 +1099,17 @@ if pagina == "Register Samples":
 
             st.caption(
                 traduzir("Análise dos parâmetros de qualidade da água registrados.","Assessment of the recorded water quality parameters.")
+            )
+
+            st.info(
+                traduzir(
+                    "A classificação apresentada utiliza critérios simplificados de referência para fins informativos. "
+                    "Ela não representa uma certificação de potabilidade nem substitui análises laboratoriais "
+                    "ou a avaliação conforme as normas aplicáveis.",
+                    "The displayed classification uses simplified reference criteria for informational purposes. "
+                    "It does not certify drinking water safety or replace laboratory testing "
+                    "or assessment under applicable standards."
+                )
             )
 
             resultados = analyze_water(
